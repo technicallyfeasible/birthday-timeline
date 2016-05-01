@@ -31,13 +31,20 @@ export default class TimelinePin extends Component {
     const styles = require('./Timeline.scss');
     const { className, style, data, expanded } = this.props;
 
+    const thumbStyle = {
+      backgroundImage: `url(${data.image})`,
+    };
+
     const classes = cn(className, styles.timelinePin, {
       [styles.expand]: expanded,
     });
     return (
       <div className={classes} style={style} onClick={this.handleSelect}>
-        <div className={styles.thumbnail}>{ data ? <img src={data.image} /> : null }</div>
-        <div className={styles.date}>{ moment(data.date).format('LL') }</div>
+        <div className={styles.thumbnail} style={thumbStyle}></div>
+        <div className={styles.pinDetail}>
+          <div className={styles.date}>{ moment(data.date).format('LL') }</div>
+          <div className={styles.title}>{ data.title }</div>
+        </div>
       </div>
     );
   }

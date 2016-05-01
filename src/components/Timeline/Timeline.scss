@@ -1,12 +1,20 @@
 @import '../../theme/variables';
 
 .timeline {
+  $lineColor: rgba(200, 200, 200, 0.7);
+
+  transition: background-image;
+  transition-duration: 1000ms;
   position: relative;
   overflow: hidden;
   width: 100%;
   height: 100%;
-  background-color: #0353a3;
   cursor: move;
+
+  background-color: #0353a3;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 50%;
 
   .timelinePin {
     transition: left, top, margin-left, margin-top;
@@ -23,21 +31,43 @@
       overflow: hidden;
       width: $pinSizeCollapsed;
       height: $pinSizeCollapsed;
-      border: 2px rgba(200, 200, 200, 0.7) solid;
+      border: 4px $lineColor solid;
       border-radius: $pinSizeCollapsed / 2;
 
-      img {
-        width: 100%;
-        margin-top: 50%;
-        transform: translateY(-50%);
+      background-size: cover;
+      background-position: 50% 50%;
+
+      @function grayscale($value) {
+        @return #{"grayscale(" + $value + ")"};
       }
+      -webkit-filter: grayscale(100%);
+      filter: grayscale(100%);
     }
 
-    .date {
-      font-weight: bold;
-      color: #fff;
-      font-size: 20px;
-      text-align: center;
+    .pinDetail {
+      transition: width;
+      transition-duration: 300ms;
+      margin-top: 1vh;
+      position: absolute;
+      width: 30vh;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1vh;
+      background-color: rgba(0, 0, 0, 0.3);
+
+      .date {
+        font-weight: bold;
+        color: #fff;
+        font-size: 2vh;
+        text-align: center;
+      }
+
+      .title {
+        font-weight: bold;
+        color: #fff;
+        font-size: 2vh;
+        text-align: center;
+      }
     }
 
     &.expand {
@@ -47,12 +77,39 @@
       .thumbnail {
         width: $pinSizeExpanded;
         height: $pinSizeExpanded;
-        border: 3px rgba(200, 200, 200, 0.7) solid;
+        border: 8px $lineColor solid;
         border-radius: $pinSizeExpanded / 2;
+
+        -webkit-filter: none;
+        filter: none;
       }
-      .date {
-        font-size: 20px;
+      .pinDetail {
+        width: 60vh;
+        padding: 2vh;
+
+        .date {
+          font-size: 4vh;
+        }
+        .title {
+          font-size: 3vh;
+        }
       }
+    }
+  }
+
+  .timelineLine {
+    transition: left, top, margin-left, margin-top;
+    transition-duration: 300ms;
+    position: absolute;
+    div {
+      transition: left, top, margin-left, margin-top;
+      transition-duration: 300ms;
+      display: inline-block;
+      position: absolute;
+      width: 1vh;
+      height: 1vh;
+      border-radius: 0.5vh;
+      background-color: $lineColor;
     }
   }
 }
