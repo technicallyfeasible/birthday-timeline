@@ -1,0 +1,58 @@
+@import '../../theme/variables';
+
+.timeline {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background-color: #0353a3;
+  cursor: move;
+
+  .timelinePin {
+    transition: left, top, margin-left, margin-top;
+    transition-duration: 300ms;
+    display: inline-block;
+    position: absolute;
+    cursor: pointer;
+    margin-left: -$pinSizeCollapsed / 2;
+    margin-top: -$pinSizeCollapsed / 2;
+
+    .thumbnail {
+      transition: width, height, border, border-radius;
+      transition-duration: 300ms;
+      overflow: hidden;
+      width: $pinSizeCollapsed;
+      height: $pinSizeCollapsed;
+      border: 2px rgba(200, 200, 200, 0.7) solid;
+      border-radius: $pinSizeCollapsed / 2;
+
+      img {
+        width: 100%;
+        margin-top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+
+    .date {
+      font-weight: bold;
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+    }
+
+    &.expand {
+      margin-left: -$pinSizeExpanded / 2;
+      margin-top: -$pinSizeExpanded / 2;
+
+      .thumbnail {
+        width: $pinSizeExpanded;
+        height: $pinSizeExpanded;
+        border: 3px rgba(200, 200, 200, 0.7) solid;
+        border-radius: $pinSizeExpanded / 2;
+      }
+      .date {
+        font-size: 20px;
+      }
+    }
+  }
+}
