@@ -15,6 +15,7 @@ module.exports = Object.assign({
   apiHost: process.env.APIHOST || 'localhost',
   apiPort: process.env.APIPORT,
   app: {
+    title: 'Happy Birthday',
     head: {
       titleTemplate: 'Happy Birthday',
       meta: [

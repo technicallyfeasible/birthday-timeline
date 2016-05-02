@@ -17,62 +17,88 @@ export default class Timeline extends Component {
     routing: PropTypes.object,
   };
 
+  constructor() {
+    super();
+    this.state = {
+      zoom: 1.0,
+    };
+  }
+
   props = {
     className: '',
     timeline: {},
+  };
+
+  handleWheel = (event) => {
+    const nextZoom = this.state.zoom - (event.deltaY / 2000);
+    this.setState({
+      zoom: Math.max(0.3, Math.min(nextZoom, 1.0)),
+    });
   };
 
   render() {
     const styles = require('./Timeline.scss');
     const { className, timeline, routing } = this.props;
 
-    const timelineStyle = {};
-
     let pinX = 0;
     let pinY = 0;
-    const currentPin = routing.locationBeforeTransitions.hash.substring(1);
-    if (currentPin) {
+    const curPinId = routing.locationBeforeTransitions.hash.substring(1);
+    if (curPinId) {
       let pin;
       let index = 0;
       do {
         pin = timeline.pins[index++];
         pinX -= pin.dx * 100;
         pinY -= pin.dy * 100;
-      } while (pin.id !== currentPin);
+      } while (pin.id !== curPinId);
     }
 
-    const lines = [];
-
-    let lastX = pinX;
-    let lastY = pinY;
-    const pins = timeline.pins.map((pin, index) => {
+    // calculate pin positions
+    let currentPin = null;
+    const points = [];
+    timeline.pins.forEach(pin => {
       pinX += pin.dx * 100;
       pinY += pin.dy * 100;
-      // add the line if not the last pin
-      if (index > 0) {
-        const lineStyle = {
-          left: '50vw',
-          top: '50vh',
-        };
-        const start = { pinX: lastX, pinY: lastY };
-        const end = { pinX, pinY };
-        lines.push(<TimelineLine key={`line_${pin.id}`} start={start} end={end} style={lineStyle}/>);
-      }
-      lastX = pinX;
-      lastY = pinY;
+      points.push({
+        id: pin.id,
+        x: pinX,
+        y: pinY,
+      });
       // add the pin
-      if (pin.id === currentPin) {
-        timelineStyle.backgroundImage = `url(${pin.background})`;
+      if (pin.id === curPinId) {
+        currentPin = pin;
       }
-      const style = {
-        left: `calc(50vw + ${pinX}vh)`,
-        top: (50 + pinY) + 'vh',
-      };
-      return <TimelinePin key={pin.id} data={pin} style={style} expanded={pin.id === currentPin} />;
     });
 
+    const middle = 50 / this.state.zoom;
+
+    // create pin objects and store positions
+    const pins = timeline.pins.map((pin, index) => {
+      const style = {
+        left: `calc(${middle}vw + ${points[index].x}vh)`,
+        top: (middle + points[index].y) + 'vh',
+      };
+      return <TimelinePin key={pin.id} data={pin} style={style} expanded={pin.id === curPinId} />;
+    });
+
+    const lineStyle = {
+      left: `${middle}vw`,
+      top: `${middle}vh`,
+    };
+    const lines = [];
+    for (let lineIndex = 0; lineIndex < (points.length - 1); lineIndex++) {
+      lines.push(<TimelineLine key={`line_${points[lineIndex].id}`} points={points} index={lineIndex} style={lineStyle}/>);
+    }
+
+    const timelineStyle = {
+      zoom: this.state.zoom,
+    };
+    if (currentPin && currentPin.background) {
+      timelineStyle.backgroundImage = `url(${currentPin.background})`;
+    }
+
     return (
-      <div className={cn(className, styles.timeline)} style={timelineStyle}>
+      <div className={cn(className, styles.timeline)} style={timelineStyle} onWheel={this.handleWheel}>
         { lines }
         { pins }
       </div>

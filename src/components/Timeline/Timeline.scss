@@ -17,8 +17,6 @@
   background-position: 50% 50%;
 
   .timelinePin {
-    transition: left, top, margin-left, margin-top;
-    transition-duration: 300ms;
     display: inline-block;
     position: absolute;
     cursor: pointer;
@@ -98,12 +96,8 @@
   }
 
   .timelineLine {
-    transition: left, top, margin-left, margin-top;
-    transition-duration: 300ms;
     position: absolute;
     div {
-      transition: left, top, margin-left, margin-top;
-      transition-duration: 300ms;
       display: inline-block;
       position: absolute;
       width: 1vh;
