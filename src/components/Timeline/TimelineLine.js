@@ -21,7 +21,7 @@ export default class TimelineLine extends Component {
     const styles = require('./Timeline.scss');
     const { className, style, points, index } = this.props;
 
-    const spacing = 2;
+    const spacing = 4;
 
     const start = points[index];
     const end = points[index + 1];

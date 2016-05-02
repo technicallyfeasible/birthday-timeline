@@ -17,6 +17,8 @@
   background-position: 50% 50%;
 
   .timelinePin {
+    transition: margin-left, margin-top;
+    transition-duration: 300ms;
     display: inline-block;
     position: absolute;
     cursor: pointer;
@@ -100,9 +102,9 @@
     div {
       display: inline-block;
       position: absolute;
-      width: 1vh;
-      height: 1vh;
-      border-radius: 0.5vh;
+      width: 2vh;
+      height: 2vh;
+      border-radius: 1vh;
       background-color: $lineColor;
     }
   }

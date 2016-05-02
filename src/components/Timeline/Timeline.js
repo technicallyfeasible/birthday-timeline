@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import {connect} from 'react-redux';
 import cn from 'classnames';
 import TimelinePin from './TimelinePin';
@@ -99,8 +100,10 @@ export default class Timeline extends Component {
 
     return (
       <div className={cn(className, styles.timeline)} style={timelineStyle} onWheel={this.handleWheel}>
-        { lines }
-        { pins }
+        <ReactCSSTransitionGroup transitionName="timelinePins" transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+          { lines }
+          { pins }
+        </ReactCSSTransitionGroup>
       </div>
     );
   }
